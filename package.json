@@ -4,7 +4,12 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "docgen": "rimraf docs && npx hardhat docgen"
+    "compile": "npx hardhat compile",
+    "docgen": "rimraf docs && npx hardhat docgen",
+    "test": "npm run compile && npx hardhat test",
+    "test:only": "npm run compile && npx hardhat test --network hardhat",
+    "test:gas": "REPORT_GAS=true npm run compile && npx hardhat test",
+    "test:coverage": "npm run compile && npx hardhat coverage"
   },
   "author": "",
   "devDependencies": {
