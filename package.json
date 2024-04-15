@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "export-abis": "npx hardhat export-abis",
     "compile": "npx hardhat compile",
     "docgen": "rimraf docs && npx hardhat docgen",
     "test": "npm run compile && npx hardhat test",
@@ -15,6 +16,7 @@
   "devDependencies": {
     "@nomicfoundation/hardhat-toolbox": "^4.0.0",
     "hardhat": "^2.21.0",
+    "hardhat-abi-exporter": "^2.10.1",
     "rimraf": "^5.0.5",
     "solidity-docgen": "^0.6.0-beta.36"
   },
