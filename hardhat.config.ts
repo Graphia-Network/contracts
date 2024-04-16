@@ -1,3 +1,5 @@
+require('dotenv').config();
+
 import { HardhatUserConfig } from "hardhat/config";
 import "@nomicfoundation/hardhat-toolbox";
 import "solidity-docgen";
@@ -12,6 +14,15 @@ const config: HardhatUserConfig = {
   abiExporter: {
     clear: true,
     only: ['Assets'],
+  },
+  networks: {
+    sepolia: {
+      url: "https://rpc.sepolia.org",
+      chainId: 11155111,
+      ...(process.env.PK && {
+        accounts: [process.env.PK]
+      })
+    },
   }
 };
 

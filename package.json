@@ -10,11 +10,13 @@
     "test": "npm run compile && npx hardhat test",
     "test:only": "npm run compile && npx hardhat test --network hardhat",
     "test:gas": "REPORT_GAS=true npm run compile && npx hardhat test",
-    "test:coverage": "npm run compile && npx hardhat coverage"
+    "test:coverage": "npm run compile && npx hardhat coverage",
+    "deploy:sepolia": "npx hardhat compile && npx hardhat run scripts/deploy.ts --network sepolia",
   },
   "author": "",
   "devDependencies": {
     "@nomicfoundation/hardhat-toolbox": "^4.0.0",
+    "dotenv": "^16.4.5",
     "hardhat": "^2.21.0",
     "hardhat-abi-exporter": "^2.10.1",
     "rimraf": "^5.0.5",
