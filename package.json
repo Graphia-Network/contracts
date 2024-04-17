@@ -6,7 +6,7 @@
   "scripts": {
     "export-abis": "npx hardhat export-abis",
     "compile": "npx hardhat compile",
-    "docgen": "rimraf docs && npx hardhat docgen",
+    "docgen": "rimraf docs && npx hardhat docgen && node postprocess-docs.js",
     "test": "npm run compile && npx hardhat test",
     "test:only": "npm run compile && npx hardhat test --network hardhat",
     "test:gas": "REPORT_GAS=true npm run compile && npx hardhat test",
