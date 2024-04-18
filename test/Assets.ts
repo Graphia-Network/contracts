@@ -76,7 +76,7 @@ describe('Assets', function () {
     });
 
     it('should fire an event when minting assets', async function () {
-      await expect(assets.newAsset('new dummy uri', signers[1].address, 20)).to.emit(assets, 'AssetCreated').withArgs(0, signers[1].address, 20);
+      await expect(assets.newAsset('new dummy uri', signers[1].address, 20)).to.emit(assets, 'Created').withArgs(0, signers[1].address, 20);
     });
   });
 
@@ -121,7 +121,7 @@ describe('Assets', function () {
     it('should fire an event when burning assets with proof', async function () {
       await assets.newAsset('new dummy uri', signers[1].address, 20);
 
-      await expect(assets.burnWithProof(0, [signers[1].address], [10], dummyProof)).to.emit(assets, 'AssetBurned').withArgs(0, signers[1].address, 10, dummyProof);
+      await expect(assets.burnWithProof(0, [signers[1].address], [10], dummyProof)).to.emit(assets, 'Burned').withArgs(0, signers[1].address, 10, dummyProof);
     });
 
     it('should allow user to burn their own assets', async function () {
@@ -140,10 +140,10 @@ describe('Assets', function () {
 
       assets = assets.connect(signers[1]);
 
-      await expect(assets.burn(0, 10)).to.emit(assets, 'AssetBurned').withArgs(0, signers[1].address, 10, "0x");
+      await expect(assets.burn(0, 10)).to.emit(assets, 'Burned').withArgs(0, signers[1].address, 10, "0x");
     });
   });
-  
+
   describe('freezing', async function () {
     it('should allow admin to freeze account', async function () {
       expect(await assets.isFrozen(signers[1].address)).to.be.false;
