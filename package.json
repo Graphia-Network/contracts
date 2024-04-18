@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "export-abis": "npx hardhat export-abis",
+    "export-abi": "npx hardhat export-abi",
     "compile": "npx hardhat compile",
     "docgen": "rimraf docs && npx hardhat docgen && node postprocess-docs.js",
     "test": "npm run compile && npx hardhat test",
