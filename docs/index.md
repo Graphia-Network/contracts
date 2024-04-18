@@ -20,10 +20,10 @@ mapping(address => bool) frozen
 
 _Mapping that keeps track of froozen accounts_
 
-### AssetCreated
+### Created
 
 ```solidity
-event AssetCreated(uint256 id, address to, uint256 amount)
+event Created(uint256 id, address to, uint256 amount)
 ```
 
 Event that is emitted when a new asset is created. To be more clear than Transfer events from ERC1155.
@@ -36,10 +36,10 @@ Event that is emitted when a new asset is created. To be more clear than Transfe
 | to | address | Address of the user to whom the asset is minted |
 | amount | uint256 | Amount of the asset minted |
 
-### AssetBurned
+### Burned
 
 ```solidity
-event AssetBurned(uint256 id, address from, uint256 amount, bytes proof)
+event Burned(uint256 id, address from, uint256 amount, bytes proof)
 ```
 
 Event that is emitted when an asset is burned. To be more clear than Transfer events from ERC1155.
@@ -196,4 +196,3 @@ Function to check if an account is frozen.
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | [0] | bool | True if the account is frozen, false otherwise. |
-

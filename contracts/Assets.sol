@@ -17,13 +17,13 @@ contract Assets is AccessControl, ERC1155 {
     /// @param id ID of the asset
     /// @param to Address of the user to whom the asset is minted
     /// @param amount Amount of the asset minted
-    event AssetCreated(uint256 indexed id, address indexed to, uint256 amount);
+    event Created(uint256 indexed id, address indexed to, uint256 amount);
 
     /// @notice Event that is emitted when an asset is burned. To be more clear than Transfer events from ERC1155.
     /// @param id ID of the asset
     /// @param from Address of the user from whom the asset is burned
     /// @param amount Amount of the asset burned
-    event AssetBurned(
+    event Burned(
         uint256 indexed id,
         address indexed from,
         uint256 amount,
@@ -66,7 +66,7 @@ contract Assets is AccessControl, ERC1155 {
             _mint(to, tokenCounter, amount, "");
         }
 
-        emit AssetCreated(tokenCounter++, to, amount);
+        emit Created(tokenCounter++, to, amount);
 
         _setURI(uri);
     }
@@ -85,7 +85,7 @@ contract Assets is AccessControl, ERC1155 {
     ) external onlyRole(DEFAULT_ADMIN_ROLE) {
         for (uint256 i = 0; i < from.length; i++) {
             _burn(from[i], id, amount[i]);
-            emit AssetBurned(id, from[i], amount[i], proof);
+            emit Burned(id, from[i], amount[i], proof);
         }
     }
 
@@ -94,7 +94,7 @@ contract Assets is AccessControl, ERC1155 {
     /// @param amount Amount of the asset to be burned.
     function burn(uint256 id, uint256 amount) external {
         _burn(msg.sender, id, amount);
-        emit AssetBurned(id, msg.sender, amount, "");
+        emit Burned(id, msg.sender, amount, "");
     }
 
     // Override safeTransferFrom to check if sender or receiver is frozen.
