@@ -8,8 +8,6 @@ import "hardhat-abi-exporter";
 const config: HardhatUserConfig = {
   solidity: "0.8.24",
   docgen: {
-    // exclude for now, until it's finished
-    exclude: ["**Escrow.sol"],
     outputDir: "docs",
     theme: "markdown",
   },

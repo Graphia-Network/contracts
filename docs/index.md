@@ -80,6 +80,12 @@ error SenderIsFrozen()
 error RecipientIsFrozen()
 ```
 
+### InvalidID
+
+```solidity
+error InvalidID()
+```
+
 ### constructor
 
 ```solidity
@@ -92,10 +98,10 @@ constructor(string initialURI, address initialOwner) public
 function supportsInterface(bytes4 interfaceId) public view returns (bool)
 ```
 
-### newAsset
+### create
 
 ```solidity
-function newAsset(string uri, address to, uint256 amount) external
+function create(uint256 id, string uri, address to, uint256 amount) external
 ```
 
 Function to create a new asset.
@@ -106,6 +112,7 @@ _Only admin can call this function._
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
+| id | uint256 | ID of the asset to be created. |
 | uri | string | New URI for the assets, that includes new metadata. |
 | to | address | Address of the user to whom the asset is to be minted. |
 | amount | uint256 | Amount of the asset to be minted. |
@@ -196,3 +203,17 @@ Function to check if an account is frozen.
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | [0] | bool | True if the account is frozen, false otherwise. |
+
+### getTokenCounter
+
+```solidity
+function getTokenCounter() external view returns (uint256)
+```
+
+Function that gets current token counter.
+
+#### Return Values
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| [0] | uint256 | Current token counter. |

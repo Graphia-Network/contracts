@@ -37,6 +37,7 @@ contract Assets is AccessControl, ERC1155 {
 
     error SenderIsFrozen();
     error RecipientIsFrozen();
+    error InvalidID();
 
     constructor(
         string memory initialURI,
@@ -53,15 +54,19 @@ contract Assets is AccessControl, ERC1155 {
     }
 
     /// @notice Function to create a new asset.
+    /// @param id ID of the asset to be created.
     /// @param uri New URI for the assets, that includes new metadata.
     /// @param to Address of the user to whom the asset is to be minted.
     /// @param amount Amount of the asset to be minted.
     /// @dev Only admin can call this function.
-    function newAsset(
+    function create(
+        uint256 id,
         string memory uri,
         address to,
         uint256 amount
     ) external onlyRole(DEFAULT_ADMIN_ROLE) {
+        if (id != tokenCounter) revert InvalidID();
+
         unchecked {
             _mint(to, tokenCounter, amount, "");
         }
@@ -143,5 +148,11 @@ contract Assets is AccessControl, ERC1155 {
     /// @return True if the account is frozen, false otherwise.
     function isFrozen(address account) external view returns (bool) {
         return frozen[account];
+    }
+
+    /// @notice Function that gets current token counter.
+    /// @return Current token counter.
+    function getTokenCounter() external view returns (uint256) {
+        return tokenCounter;
     }
 }

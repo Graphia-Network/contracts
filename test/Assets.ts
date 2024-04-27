@@ -27,6 +27,10 @@ describe('Assets', function () {
     it('should have the correct initial URL', async function () {
       expect(await assets.uri(1)).to.equal('dummy url');
     });
+
+    it('should count 0 tokens', async function () {
+      expect(await assets.getTokenCounter()).to.equal(0);
+    });
   });
 
   describe('supportsInterface override', async function () {
@@ -65,24 +69,32 @@ describe('Assets', function () {
 
   describe('asset creation', async function () {
     it('should allow the owner to create assets', async function () {
-      await assets.newAsset('new dummy uri', signers[1].address, 20);
+      await assets.create(0, 'new dummy uri', signers[1].address, 20);
       expect(await assets.balanceOf(signers[1].address, 0)).to.equal(20);
+
+      expect(await assets.getTokenCounter()).to.equal(1);
     });
 
     it('should not allow non-owners to create assets', async function () {
       assets = assets.connect(signers[1]);
 
-      await expect(assets.newAsset('new dummy uri', signers[1].address, 20)).to.be.revertedWithCustomError(assets, 'AccessControlUnauthorizedAccount');
+      await expect(assets.create(0, 'new dummy uri', signers[1].address, 20)).to.be.revertedWithCustomError(assets, 'AccessControlUnauthorizedAccount');
     });
 
     it('should fire an event when minting assets', async function () {
-      await expect(assets.newAsset('new dummy uri', signers[1].address, 20)).to.emit(assets, 'Created').withArgs(0, signers[1].address, 20);
+      await expect(assets.create(0, 'new dummy uri', signers[1].address, 20)).to.emit(assets, 'Created').withArgs(0, signers[1].address, 20);
+    });
+
+    it('should fail if the provided ID is already in use', async function () {
+      await assets.create(0, 'new dummy uri', signers[1].address, 20);
+
+      await expect(assets.create(0, 'new dummy uri', signers[1].address, 20)).to.be.revertedWithCustomError(assets, 'InvalidID');
     });
   });
 
   describe('burning', async function () {
     it('should allow admin to burn assets from single address with proof', async function () {
-      await assets.newAsset('new dummy uri', signers[1].address, 20);
+      await assets.create(0, 'new dummy uri', signers[1].address, 20);
       expect(await assets.balanceOf(signers[1].address, 0)).to.equal(20);
 
       await assets.burnWithProof(0, [signers[1].address], [10], dummyProof);
@@ -90,7 +102,7 @@ describe('Assets', function () {
     });
 
     it('should allow admin to burn assets from multiple addresses with proof', async function () {
-      await assets.newAsset('new dummy uri', signers[1].address, 20);
+      await assets.create(0, 'new dummy uri', signers[1].address, 20);
 
       assets = assets.connect(signers[1]);
 
@@ -108,7 +120,7 @@ describe('Assets', function () {
     });
 
     it('should prohibit burning assets with proof to non-admin', async function () {
-      await assets.newAsset('new dummy uri', signers[1].address, 20);
+      await assets.create(0, 'new dummy uri', signers[1].address, 20);
       expect(await assets.balanceOf(signers[1].address, 0)).to.equal(20);
 
       assets = assets.connect(signers[1]);
@@ -119,13 +131,13 @@ describe('Assets', function () {
     });
 
     it('should fire an event when burning assets with proof', async function () {
-      await assets.newAsset('new dummy uri', signers[1].address, 20);
+      await assets.create(0, 'new dummy uri', signers[1].address, 20);
 
       await expect(assets.burnWithProof(0, [signers[1].address], [10], dummyProof)).to.emit(assets, 'Burned').withArgs(0, signers[1].address, 10, dummyProof);
     });
 
     it('should allow user to burn their own assets', async function () {
-      await assets.newAsset('new dummy uri', signers[1].address, 20);
+      await assets.create(0, 'new dummy uri', signers[1].address, 20);
       expect(await assets.balanceOf(signers[1].address, 0)).to.equal(20);
 
       assets = assets.connect(signers[1]);
@@ -136,7 +148,7 @@ describe('Assets', function () {
     });
 
     it('should fire an event when burning assets', async function () {
-      await assets.newAsset('new dummy uri', signers[1].address, 20);
+      await assets.create(0, 'new dummy uri', signers[1].address, 20);
 
       assets = assets.connect(signers[1]);
 
@@ -173,7 +185,7 @@ describe('Assets', function () {
     });
 
     it('should prohibit frozen account from sending or receiving assets', async function () {
-      await assets.newAsset('new dummy uri', signers[1].address, 20);
+      await assets.create(0, 'new dummy uri', signers[1].address, 20);
 
       await assets.setAccountFreezeStatus(signers[1].address, true);
 
@@ -198,7 +210,7 @@ describe('Assets', function () {
 
   describe('transfer overrides', async function () {
     it('should transfer single asset', async function () {
-      await assets.newAsset('new dummy uri', signers[1].address, 20);
+      await assets.create(0, 'new dummy uri', signers[1].address, 20);
 
       assets = assets.connect(signers[1]);
 
@@ -209,8 +221,8 @@ describe('Assets', function () {
     });
 
     it('should transfer multiple assets', async function () {
-      await assets.newAsset('new dummy uri', signers[1].address, 20);
-      await assets.newAsset('new dummy uri', signers[1].address, 20);
+      await assets.create(0, 'new dummy uri', signers[1].address, 20);
+      await assets.create(1, 'new dummy uri', signers[1].address, 20);
 
       assets = assets.connect(signers[1]);
 
